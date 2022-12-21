@@ -14,10 +14,17 @@ const uri = process.env.ATLAS_URI;
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
-const connection  = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-})
+async function connectToMongoDB() {
+  try {
+    const connection  = mongoose.connection;
+    await connection.once('open', () => {
+      console.log("MongoDB database connection established successfully");
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+connectToMongoDB();
 
 
 const exerciseRouter = require('./routes/exercise');
